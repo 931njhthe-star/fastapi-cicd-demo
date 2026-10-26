@@ -9,6 +9,25 @@
 - `/` 응답의 `version` 값에서 실제 배포된 커밋 SHA 확인
 - `/health` 응답으로 배포 후 헬스 체크
 
+## 실습 완료 기록
+
+2026-10-26 기준으로 `main` 브랜치 push부터 EC2 배포까지 확인했습니다.
+
+- GitHub Actions `test`: pytest와 Docker 이미지 빌드 검증 성공
+- GitHub Actions `deploy`: OIDC로 AWS 인증, ECR 이미지 push, SSM을 통한 EC2 배포 성공
+- 검증 커밋: `e527de30d09c39328d6d46b74be4c16aef57f57f`
+- EC2에서 `curl http://127.0.0.1:8000/` 실행 시 앱 메시지와 해당 커밋의 `version` 응답 확인
+- EC2에서 `curl http://127.0.0.1:8000/health` 실행 시 `{"status":"ok"}` 확인
+
+새 배포를 검증할 때는 `/` 응답 메시지를 바꾸고 테스트의 기대값도 함께 수정한 뒤 `main`에 push합니다. Actions의 새 실행에서 `test`와 `deploy`가 모두 성공했는지 확인하고, EC2에서 다음 명령을 실행해 응답 메시지와 `version`이 새 커밋으로 바뀌었는지 확인합니다.
+
+```bash
+curl http://127.0.0.1:8000/
+curl http://127.0.0.1:8000/health
+```
+
+현재 Compose는 앱 포트를 EC2 내부 `127.0.0.1:8000`에만 바인딩합니다. Nginx와 공개 HTTP/HTTPS 연결은 이 실습에서 설정하지 않았으므로, 앱을 인터넷에서 직접 접속할 수 없는 것이 정상입니다.
+
 ## 로컬 실행
 
 Python 3.12 이상을 사용합니다.
