@@ -13,5 +13,5 @@ IMAGE_URI="$IMAGE_URI" docker compose pull app
 IMAGE_URI="$IMAGE_URI" docker compose up -d app
 
 curl --fail --silent --show-error \
-  --retry 10 --retry-delay 2 --retry-connrefused \
+  --retry 10 --retry-delay 2 --retry-connrefused --retry-all-errors \
   http://127.0.0.1:8000/health
