@@ -10,7 +10,7 @@ def test_root_returns_app_name_and_version() -> None:
 
     assert response.status_code == 200
     assert response.json() == {
-        "message": "FastAPI CI/CD demo is running",
+        "message": "자동 배포 테스트 성공!",
         "version": "local",
     }
 
