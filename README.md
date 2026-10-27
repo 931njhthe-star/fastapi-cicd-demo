@@ -4,8 +4,9 @@
 
 ## 동작 흐름
 
-- Pull request 또는 `main` 브랜치 push: 테스트와 Docker 이미지 빌드 검증
-- `main` 브랜치 push: 위 단계 성공 후 ECR에 커밋 SHA 태그 이미지 업로드, SSM으로 EC2 배포
+- Pull request 또는 `main` 브랜치 push: `test` 성공 후 `build`에서 Docker 이미지 빌드
+- `main` 브랜치 push: `build`가 ECR에 커밋 SHA 태그 이미지를 업로드하고, `deploy`가 해당 이미지를 SSM으로 EC2에 배포
+- Pull request에서는 AWS 인증이나 배포 없이 Docker 이미지 빌드까지만 수행
 - `/` 응답의 `version` 값에서 실제 배포된 커밋 SHA 확인
 - `/health` 응답으로 배포 후 헬스 체크
 
